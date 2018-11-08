@@ -17,7 +17,7 @@ data Bar = Bar
   { barLeftEnd :: Maybe Text
   , barRightEnd :: Maybe Text
   , barWidth :: Maybe Natural
-  , alignment :: Maybe Alignment
+  , alignment :: Alignment
   , separator :: Maybe Text
   , segments :: Vector Text
   } deriving (Generic, Show)
