@@ -1,1 +1,1 @@
-<ToTheLeft : {} | ToTheRight : {} | Centered : {}>
+< ToTheLeft : {} | ToTheRight : {} | Centered : {} >

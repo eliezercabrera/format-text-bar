@@ -1,6 +1,11 @@
-{ segmentLeftEnd = ["「"] : Optional Text
-  , segmentRightEnd = ["」"] : Optional Text
-  , segmentPaddingWidth = [] : Optional Natural
-  , segmentContent = ""
-  , segmentRefineContent = ["kanji"] : Optional Text}
- 
+{ segmentLeftEnd =
+    [ "\u300C" ] : Optional Text
+, segmentRightEnd =
+    [ "\u300D" ] : Optional Text
+, segmentPaddingWidth =
+    [] : Optional Natural
+, segmentContent =
+    ""
+, segmentRefineContent =
+    [ "kanji" ] : Optional Text
+}
