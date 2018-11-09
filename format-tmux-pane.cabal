@@ -30,6 +30,7 @@ library
       base >=4.7 && <5,
       containers,
       dhall,
+      safe,
       text,
       vector
   default-language: Haskell2010
