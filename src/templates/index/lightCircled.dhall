@@ -1,0 +1,1 @@
+{ segmentRefineContent = [ "lightCircled" ] : Optional Text }
