@@ -3,7 +3,7 @@
 , segmentRightEnd :
     Optional Text
 , segmentPaddingWidth :
-    Optional Natural
+    Natural
 , segmentContent :
     Text
 , segmentRefineContent :

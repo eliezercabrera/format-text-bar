@@ -16,13 +16,19 @@ import Dhall hiding (maybe)
 data Segment = Segment
   { segmentLeftEnd :: Maybe Text
   , segmentRightEnd :: Maybe Text
-  , segmentPaddingWidth :: Maybe Natural
+  , segmentPaddingWidth :: Natural
   , segmentContent :: Text
   , segmentRefineContent :: Maybe Text
   } deriving (Generic)
 
+refiningFunctions :: M.Map T.Text (T.Text -> T.Text)
 refiningFunctions =
-  M.fromList [("kanji", romanToKanji)] :: M.Map T.Text (T.Text -> T.Text)
+  M.fromList
+    [ ("kanji", romanToKanji)
+    , ("command", id)
+    , ("shortenPath", id)
+    , ("title", id)
+    ]
 
 textToInt :: T.Text -> Int
 textToInt = fromIntegral . read . T.unpack
@@ -42,12 +48,14 @@ printSegment segment =
     T.append
     (catMaybes
        ([ segmentLeftEnd segment
-        , flip T.replicate " " . fromIntegral <$> segmentPaddingWidth segment
+        , return . flip T.replicate " " . fromIntegral $
+          segmentPaddingWidth segment
         , return
             (fromMaybe
                id
                (segmentRefineContent segment >>= flip M.lookup refiningFunctions)
                (segmentContent segment))
-        , flip T.replicate " " . fromIntegral <$> segmentPaddingWidth segment
+        , return . flip T.replicate " " . fromIntegral $
+          segmentPaddingWidth segment
         , segmentRightEnd segment
         ]))

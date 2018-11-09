@@ -25,15 +25,19 @@ defaultRoot = "/home/eli/code/cli_utilities/format-tmux-pane/src/"
 
 constructSegment :: TmuxPaneInformation -> T.Text -> IO Segment
 constructSegment paneInfo segmentName = do
-  let segmentPath =
+  let defaultSegmentPath =
+        T.append defaultRoot "templates/default-segment.dhall"
+  let pathToDefaultSegmentOverride =
         foldl T.append defaultRoot ["templates/", segmentName, "/default"]
+  let overridenDefaultSegment =
+        foldl T.append defaultSegmentPath [" // ", pathToDefaultSegmentOverride]
   input auto $
-    fromMaybe segmentPath $ do
+    fromMaybe overridenDefaultSegment $ do
       contentOverride <- M.lookup segmentName (segmentNameToContent paneInfo)
       return
         (foldl
            T.append
-           segmentPath
+           overridenDefaultSegment
            [" // {segmentContent = \"", contentOverride, "\"}"])
 
 main :: IO ()
