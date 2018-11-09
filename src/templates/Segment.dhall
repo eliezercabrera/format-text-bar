@@ -2,5 +2,5 @@
   , segmentRightEnd : Optional Text
   , segmentPaddingWidth : Optional Natural
   , segmentContent :: Text
-  , segmentRefineContent :: Optional (Text -> Text)
- 
+  , segmentRefineContent :: Optional Text
+} 

@@ -4,5 +4,5 @@
   , separator = ["┃"] : Optional Text
   , alignment = <ToTheLeft = {=} | ToTheRight : {} | Centered : {}> : ./Alignment.dhall
   , barWidth = [] : Optional  Natural
-  , segments = ["index", "command", "path", "title"]
+  , barSegments = ["index", "command", "path", "title"]
   }

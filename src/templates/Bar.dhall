@@ -3,5 +3,5 @@
   , barWidth : Optional Natural
   , alignment : ./Alignment.dhall
   , separator : Optional Text
-  , segments : List Text
+  , barSegments : List Text
   }

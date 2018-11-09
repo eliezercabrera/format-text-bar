@@ -1,10 +1,13 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module FormatTmuxPane
   ( TmuxPaneInformation(..)
-  , format
+  , segmentNameToContent
   ) where
 
+import qualified Data.Map.Strict as M
+import qualified Data.Text as T
 import Dhall
 
 data TmuxPaneInformation = TmuxPaneInformation
@@ -17,5 +20,11 @@ data TmuxPaneInformation = TmuxPaneInformation
   , paneTitle :: Text
   } deriving (Generic, Show)
 
-format :: a -> String
-format _ = "Hello, World!"
+segmentNameToContent :: TmuxPaneInformation -> M.Map T.Text T.Text
+segmentNameToContent paneInfo =
+  M.fromList
+    [ ("index", (T.pack . show . paneIndex) paneInfo)
+    , ("command", paneCurrentCommand paneInfo)
+    , ("path", paneCurrentPath paneInfo)
+    , ("paneTitle", paneTitle paneInfo)
+    ]

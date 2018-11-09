@@ -1,11 +1,17 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Bar
   ( Bar(..)
   , Alignment(..)
+  , printBar
   ) where
 
-import Dhall
+import Data.Maybe (catMaybes, fromMaybe)
+import qualified Data.Text as T
+import qualified Data.Vector as V
+import Dhall hiding (maybe)
+import Segment
 
 data Alignment
   = ToTheLeft
@@ -19,5 +25,18 @@ data Bar = Bar
   , barWidth :: Maybe Natural
   , alignment :: Alignment
   , separator :: Maybe Text
-  , segments :: Vector Text
+  , barSegments :: Vector Text
   } deriving (Generic, Show)
+
+printBar :: V.Vector Segment -> Bar -> Text
+printBar segments bar =
+  foldl1
+    T.append
+    (catMaybes
+       [ barLeftEnd bar
+       , return
+           (T.intercalate
+              (fromMaybe "" (separator bar))
+              (V.toList (V.map printSegment segments)))
+       , barRightEnd bar
+       ])
