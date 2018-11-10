@@ -26,5 +26,5 @@ segmentNameToContent paneInfo =
     [ ("index", (T.pack . show . paneIndex) paneInfo)
     , ("command", paneCurrentCommand paneInfo)
     , ("path", paneCurrentPath paneInfo)
-    , ("paneTitle", paneTitle paneInfo)
+    , ("title", paneTitle paneInfo)
     ]
