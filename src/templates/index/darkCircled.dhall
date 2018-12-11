@@ -1,5 +1,5 @@
   λ(default : ./../Segment.dhall)
-→ λ(isActive : Bool)
+→ λ(tmuxInfo : ./../TmuxPaneInformation.dhall)
 →     let override =
             { segmentRefineContent = [ "darkCircled" ] : Optional Text }
   

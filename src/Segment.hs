@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -19,7 +20,7 @@ data Segment = Segment
   , segmentPaddingWidth :: Natural
   , segmentContent :: Text
   , segmentRefineContent :: Maybe Text
-  } deriving (Generic)
+  } deriving (Generic, Inject)
 
 refiningFunctions :: M.Map T.Text (T.Text -> T.Text)
 refiningFunctions =

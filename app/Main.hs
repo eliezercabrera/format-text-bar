@@ -35,31 +35,19 @@ constructBar paneInfo = do
   return (makeBar paneInfo)
 
 constructSegment :: TmuxPaneInformation -> T.Text -> IO Segment
-constructSegment paneInfo segmentName =
-  let dhallTemplate =
-        "    let makeSegment = ${root}templates/default-segment.dhall\
-        \ in let makeOverride = ${root}templates/${segmentName}/default\
-        \ in let defaultSegment = makeSegment ${isActiveText}\
-        \ in let overridenSegment = makeOverride defaultSegment ${isActiveText}\
-        \ in if ${hasExtraOverride}\
-        \ then overridenSegment // {segmentContent = \"${extraOverride}\"}\
-        \ else overridenSegment"
-      dhallCommand =
-        foldl
-          replaceTemplate
-          dhallTemplate
-          [ ("root", defaultRoot)
-          , ("segmentName", segmentName)
-          , ("isActiveText", T.pack (show (isPaneActive paneInfo)))
-          , ( "hasExtraOverride"
-            , T.pack
-                (show (M.member segmentName (segmentNameToContent paneInfo))))
-          , ( "extraOverride"
-            , fromMaybe
-                ""
-                (M.lookup segmentName (segmentNameToContent paneInfo)))
-          ]
-   in input auto dhallCommand
+constructSegment paneInfo segmentName = do
+  let makeSegmentTemplate =
+        T.concat [defaultRoot, "templates/default-segment.dhall"]
+  makeSegment <-
+    input auto makeSegmentTemplate :: IO (TmuxPaneInformation -> Text -> Segment)
+  let overrideDefaultTemplate =
+        T.concat [defaultRoot, "templates/", segmentName, "/default"]
+  makeOverride <-
+    input auto overrideDefaultTemplate :: IO (Segment -> TmuxPaneInformation -> Segment)
+  let content =
+        fromMaybe "" (M.lookup segmentName (segmentNameToContent paneInfo))
+  let defaultSegment = makeSegment paneInfo content
+  return (makeOverride defaultSegment paneInfo)
 
 main :: IO ()
 main = do

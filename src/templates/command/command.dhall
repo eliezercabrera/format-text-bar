@@ -1,5 +1,5 @@
   λ(default : ./../Segment.dhall)
-→ λ(isActive : Bool)
+→ λ(tmuxInfo : ./../TmuxPaneInformation.dhall)
 →     let override = { segmentRefineContent = [ "command" ] : Optional Text }
   
   in  default ⫽ override

@@ -1,4 +1,5 @@
-  λ(isActive : Bool)
+  λ(tmuxInfo : ./TmuxPaneInformation.dhall)
+→ λ(content : Text)
 →   { segmentLeftEnd =
         [ "" ] : Optional Text
     , segmentRightEnd =
@@ -6,7 +7,7 @@
     , segmentPaddingWidth =
         1 : Natural
     , segmentContent =
-        ""
+        content
     , segmentRefineContent =
         [] : Optional Text
     }
