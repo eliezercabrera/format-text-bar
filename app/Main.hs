@@ -12,42 +12,25 @@ import Dhall hiding (maybe)
 import FormatTmuxPane
 import Segment
 
-instance Interpret TmuxPaneInformation
-
-instance Interpret Alignment
-
-instance Interpret Bar
-
-instance Interpret Segment
-
-defaultRoot :: T.Text
-defaultRoot = "/home/eli/code/cli_utilities/format-tmux-pane/src/"
-
-replaceTemplate :: T.Text -> (T.Text, T.Text) -> T.Text
-replaceTemplate template (key, value) = T.replace trueKey value template
-  where
-    trueKey = foldl T.append "${" [key, "}"]
+constructDhallTemplate :: (Interpret result) => T.Text -> IO result
+constructDhallTemplate pathFromRoot =
+  let root = "/home/eli/code/cli_utilities/format-tmux-pane/src/templates/"
+      path = T.append root pathFromRoot
+   in input auto path
 
 constructBar :: TmuxPaneInformation -> IO Bar
 constructBar paneInfo = do
-  let dhallTemplate = T.concat [defaultRoot, "templates/default-bar.dhall"]
-  makeBar <- input auto dhallTemplate :: IO (TmuxPaneInformation -> Bar)
+  makeBar <- constructDhallTemplate "default-bar.dhall"
   return (makeBar paneInfo)
 
 constructSegment :: TmuxPaneInformation -> T.Text -> IO Segment
 constructSegment paneInfo segmentName = do
-  let makeSegmentTemplate =
-        T.concat [defaultRoot, "templates/default-segment.dhall"]
-  makeSegment <-
-    input auto makeSegmentTemplate :: IO (TmuxPaneInformation -> Text -> Segment)
-  let overrideDefaultTemplate =
-        T.concat [defaultRoot, "templates/", segmentName, "/default"]
+  makeSegment <- constructDhallTemplate "default-segment.dhall"
   makeOverride <-
-    input auto overrideDefaultTemplate :: IO (Segment -> TmuxPaneInformation -> Segment)
+    constructDhallTemplate (T.append segmentName "/default") :: IO (Segment -> TmuxPaneInformation -> Segment)
   let content =
         fromMaybe "" (M.lookup segmentName (segmentNameToContent paneInfo))
-  let defaultSegment = makeSegment paneInfo content
-  return (makeOverride defaultSegment paneInfo)
+  return (makeOverride (makeSegment paneInfo content) paneInfo)
 
 main :: IO ()
 main = do

@@ -19,7 +19,7 @@ data TmuxPaneInformation = TmuxPaneInformation
   , paneCurrentCommand :: Text
   , paneCurrentPath :: Text
   , paneTitle :: Text
-  } deriving (Generic, Inject, Show)
+  } deriving (Generic, Inject, Interpret)
 
 segmentNameToContent :: TmuxPaneInformation -> M.Map T.Text T.Text
 segmentNameToContent paneInfo =

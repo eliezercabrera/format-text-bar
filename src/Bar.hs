@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -17,7 +18,7 @@ data Alignment
   = ToTheLeft
   | ToTheRight
   | Centered
-  deriving (Generic, Show)
+  deriving (Generic, Interpret)
 
 data Bar = Bar
   { barLeftEnd :: Maybe Text
@@ -26,7 +27,7 @@ data Bar = Bar
   , alignment :: Alignment
   , separator :: Maybe Text
   , barSegments :: Vector Text
-  } deriving (Generic, Show)
+  } deriving (Generic, Interpret)
 
 printBar :: V.Vector Segment -> Bar -> Text
 printBar segments bar =

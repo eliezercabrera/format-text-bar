@@ -20,7 +20,7 @@ data Segment = Segment
   , segmentPaddingWidth :: Natural
   , segmentContent :: Text
   , segmentRefineContent :: Maybe Text
-  } deriving (Generic, Inject)
+  } deriving (Generic, Interpret, Inject)
 
 refiningFunctions :: M.Map T.Text (T.Text -> T.Text)
 refiningFunctions =
