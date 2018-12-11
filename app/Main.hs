@@ -29,18 +29,10 @@ replaceTemplate template (key, value) = T.replace trueKey value template
     trueKey = foldl T.append "${" [key, "}"]
 
 constructBar :: TmuxPaneInformation -> IO Bar
-constructBar paneInfo =
-  let dhallTemplate =
-        "    let makeBar = ${root}templates/default-bar.dhall\
-        \ in makeBar ${isActiveText}"
-      dhallCommand =
-        foldl
-          replaceTemplate
-          dhallTemplate
-          [ ("root", defaultRoot)
-          , ("isActiveText", T.pack (show (isPaneActive paneInfo)))
-          ]
-   in input auto dhallCommand
+constructBar paneInfo = do
+  let dhallTemplate = T.concat [defaultRoot, "templates/default-bar.dhall"]
+  makeBar <- input auto dhallTemplate :: IO (TmuxPaneInformation -> Bar)
+  return (makeBar paneInfo)
 
 constructSegment :: TmuxPaneInformation -> T.Text -> IO Segment
 constructSegment paneInfo segmentName =

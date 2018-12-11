@@ -1,4 +1,4 @@
-  λ(isActive : Bool)
+  λ(tmuxInfo : ./TmuxPaneInformation.dhall)
 →   { barLeftEnd =
         [ "┨" ] : Optional Text
     , barRightEnd =

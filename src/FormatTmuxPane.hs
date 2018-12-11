@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -18,7 +19,7 @@ data TmuxPaneInformation = TmuxPaneInformation
   , paneCurrentCommand :: Text
   , paneCurrentPath :: Text
   , paneTitle :: Text
-  } deriving (Generic, Show)
+  } deriving (Generic, Inject, Show)
 
 segmentNameToContent :: TmuxPaneInformation -> M.Map T.Text T.Text
 segmentNameToContent paneInfo =
