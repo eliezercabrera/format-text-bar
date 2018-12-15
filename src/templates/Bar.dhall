@@ -5,7 +5,7 @@
 , barWidth :
     Optional Natural
 , alignment :
-    ./Alignment.dhall
+    ./enums/AlignmentType.dhall
 , separator :
     Optional Text
 , barSegments :
