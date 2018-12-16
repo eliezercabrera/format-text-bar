@@ -21,7 +21,8 @@ library
   exposed-modules:
       FormatTmuxPane,
       Bar,
-      Segment
+      Segment,
+      Rule
   other-modules:
       Paths_format_tmux_pane
   hs-source-dirs:

@@ -1,4 +1,6 @@
-{ segmentLeftEnd :
+{ segmentName :
+    Text
+, segmentLeftEnd :
     Optional Text
 , segmentRightEnd :
     Optional Text

@@ -15,7 +15,8 @@ import Dhall hiding (maybe)
 import qualified Safe as Safe
 
 data Segment = Segment
-  { segmentLeftEnd :: Maybe Text
+  { segmentName :: Text
+  , segmentLeftEnd :: Maybe Text
   , segmentRightEnd :: Maybe Text
   , segmentPaddingWidth :: Natural
   , segmentContent :: Text

@@ -1,6 +1,9 @@
   λ(tmuxInfo : ./TmuxPaneInformation.dhall)
+→ λ(segmentName : Text)
 → λ(content : Text)
-→   { segmentLeftEnd =
+→   { segmentName =
+        segmentName : Text
+    , segmentLeftEnd =
         [ "" ] : Optional Text
     , segmentRightEnd =
         [ "" ] : Optional Text

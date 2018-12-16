@@ -10,6 +10,7 @@ import qualified Data.Text.IO as T
 import qualified Data.Vector.Unboxed as V
 import Dhall hiding (maybe)
 import FormatTmuxPane
+import Rule
 import Segment
 
 constructDhallTemplate :: (Interpret result) => T.Text -> IO result
@@ -30,11 +31,12 @@ constructSegment paneInfo segmentName = do
     constructDhallTemplate (T.append segmentName "/default") :: IO (Segment -> TmuxPaneInformation -> Segment)
   let content =
         fromMaybe "" (M.lookup segmentName (segmentNameToContent paneInfo))
-  return (makeOverride (makeSegment paneInfo content) paneInfo)
+  return (makeOverride (makeSegment paneInfo segmentName content) paneInfo)
 
 main :: IO ()
 main = do
   tmuxInformation <- input auto =<< T.getContents
   defaultBar <- constructBar tmuxInformation
   segments <- mapM (constructSegment tmuxInformation) (barSegments defaultBar)
-  T.putStr (printBar segments defaultBar)
+  rules <- constructDhallTemplate "rules.dhall" :: IO [Rule]
+  T.putStr (printBar (foldl (flip processRule) segments rules) defaultBar)
